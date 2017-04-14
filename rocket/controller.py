@@ -30,6 +30,12 @@ class Controller:
         self._row = value
         self.connector.controller_row_changed(self._row)
 
+    # Not all editors support this (breaks compatibility)
+    # def pause(self):
+    #     self._playing = not self._playing
+    #     print("Pause:", not self._playing)
+    #     self.connector.controller_pause_state(int(self._playing))
+
     def update(self):
         pass
 

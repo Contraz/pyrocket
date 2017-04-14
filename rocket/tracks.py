@@ -93,7 +93,7 @@ class Track:
         i = self.get_key_index(row)
         del self.keys[i]
 
-    def print(self):
+    def print_keys(self):
         for k in self.keys:
             print(k)
 

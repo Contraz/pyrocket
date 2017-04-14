@@ -22,6 +22,10 @@ class Rocket:
         self.tracks.connector = self.connector
         self.controller.connector = self.connector
 
+    # Not all editors support this (breaks compatibility)
+    # def pause(self):
+    #     self.controller.pause()
+
     def update(self):
         self.controller.update()
         self.connector.update()

@@ -67,6 +67,11 @@ class SocketConnector:
         self.writer.int(int(row))
         # print(" <- row: {}".format(row))
 
+    # # Not all editors support this (breaks compatibility)
+    # def controller_pause_state(self, state):
+    #     self.writer.byte(PAUSE)
+    #     self.writer.byte(state)
+
     def read_command(self):
         """
         Attempt to read the next command from the editor/server
