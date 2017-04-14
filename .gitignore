@@ -1,0 +1,9 @@
+/.idea
+/.tox
+/env
+/data
+/ui
+__pycache__
+/build
+/dist
+/pyrocket.egg-info
