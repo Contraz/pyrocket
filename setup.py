@@ -1,9 +1,9 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 setup(
     name="pyrocket",
-    version="0.1.1",
+    version="0.1.2",
     description="Rocket sync-tracker client",
     long_description=open('README.rst').read(),
     url="https://github.com/Contraz/pyrocket",
@@ -13,6 +13,7 @@ setup(
     maintainer_email="eforselv@gmail.com",
     include_package_data=True,
     keywords=['synchronizing', 'music', 'rocket'],
+    packages=['rocket'],
     classifiers=[
         'Programming Language :: Python',
         'Intended Audience :: Developers',
