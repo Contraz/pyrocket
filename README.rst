@@ -1,3 +1,4 @@
+|pypi| |travis|
 
 pyrocket
 ========
@@ -14,3 +15,8 @@ Rocket explained by the project creator:
 synchronizing music and visuals in demoscene productions. It consists of a GUI editor
 (using Qt), and an ANSI C library that can either communicate with the editor over a
 network socket, or play back an exported data-set.``
+
+.. |pypi| image:: https://img.shields.io/pypi/v/pyrocket.svg
+   :target: https://pypi.python.org/pypi/pyrocket
+.. |travis| image:: https://travis-ci.org/Contraz/pyrocket.svg?branch=master
+   :target: https://travis-ci.org/Contraz/pyrocket
