@@ -101,7 +101,7 @@ class SocketConnector:
         row = self.reader.int()
         value = self.reader.float()
         kind = self.reader.byte()
-        print(f" -> track={track_id}, row={row}, value={value}, type={kind}")
+        print(" -> track={}, row={}, value={}, type={}".format(track_id, row, value, kind))
 
         # Add or update track value
         track = self.tracks.get_by_id(track_id)
@@ -111,7 +111,7 @@ class SocketConnector:
         """Read incoming delete key event from server"""
         track_id = self.reader.int()
         row = self.reader.int()
-        print(f" -> track={track_id}, row={row}")
+        print(" -> track={}, row={}".format(track_id, row))
 
         # Delete the actual track value
         track = self.tracks.get_by_id(track_id)
