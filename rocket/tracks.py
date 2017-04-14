@@ -26,11 +26,15 @@ class TrackContainer:
         t = self.tracks.get(name)
         if not t:
             t = Track(name)
-            self.tracks[name] = t
-            self.track_index.append(t)
+            self.add(t)
 
         self.connector.track_added(name)
         return t
+
+    def add(self, obj):
+        """Add pre-created tracks"""
+        self.tracks[obj.name] = obj
+        self.track_index.append(obj)
 
     def save(self):
         for t in self.track_index:
