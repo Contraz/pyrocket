@@ -27,8 +27,8 @@ def main():
         v1 = rocket.value("underwater:cam.x")
         v2 = rocket.value("underwater:cam.y")
         # Get track values from track
-        v3 = t1.value(rocket.row)
-        v4 = t2.value(rocket.row)
+        v3 = t1.row_value(rocket.row)
+        v4 = t2.row_value(rocket.row)
 
         time.sleep(1.0 / 1000 * 16)
         frames += 1

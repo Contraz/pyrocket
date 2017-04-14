@@ -14,6 +14,7 @@ class TrackContainer:
         self.tracks = {}
         self.track_index = []
         self.connector = None
+        self.controller = None
         self.track_path = track_path
 
     def get(self, name):
@@ -33,6 +34,7 @@ class TrackContainer:
 
     def add(self, obj):
         """Add pre-created tracks"""
+        obj.controller = self.controller
         self.tracks[obj.name] = obj
         self.track_index.append(obj)
 
@@ -46,8 +48,13 @@ class Track:
     def __init__(self, name):
         self.name = name
         self.keys = []
+        # Shortcut to controller for tracks_per_second lookups
+        self.controller = None
 
-    def value(self, row):
+    def time_value(self, time):
+        return self.row_value(time * self.controller.rows_per_second)
+
+    def row_value(self, row):
         """Get the tracks value at row"""
         irow = int(row)
         i = self._get_key_index(irow)
