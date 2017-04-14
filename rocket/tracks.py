@@ -43,10 +43,10 @@ class Track:
         self.name = name
         self.keys = []
 
-    def get_value(self, row):
+    def value(self, row):
         """Get the tracks value at row"""
         irow = int(row)
-        i = self.get_key_index(irow)
+        i = self._get_key_index(irow)
         if i == -1:
             return 0.0
 
@@ -56,7 +56,22 @@ class Track:
 
         return TrackKey.interpolate(self.keys[i], self.keys[i + 1], row)
 
-    def get_key_index(self, row):
+    def add_or_update(self, row, value, kind):
+        """Add or update a track value"""
+        i = bisect.bisect_left(self.keys, row)
+
+        # Are we simply replacing a key?
+        if i < len(self.keys) and self.keys[i].row == row:
+            self.keys[i].update(value, kind)
+        else:
+            self.keys.insert(i, TrackKey(row, value, kind))
+
+    def delete(self, row):
+        """Delete a track value"""
+        i = self._get_key_index(row)
+        del self.keys[i]
+
+    def _get_key_index(self, row):
         """Get the key that should be used as the first interpolation value"""
         # Don't bother with empty tracks
         if len(self.keys) == 0:
@@ -77,21 +92,6 @@ class Track:
 
         # Return the last index
         return len(self.keys) - 1
-
-    def add_or_update(self, row, value, kind):
-        """Add or update a track value"""
-        i = bisect.bisect_left(self.keys, row)
-
-        # Are we simply replacing a key?
-        if i < len(self.keys) and self.keys[i].row == row:
-            self.keys[i].update(value, kind)
-        else:
-            self.keys.insert(i, TrackKey(row, value, kind))
-
-    def delete(self, row):
-        """Delete a track value"""
-        i = self.get_key_index(row)
-        del self.keys[i]
 
     def print_keys(self):
         for k in self.keys:

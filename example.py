@@ -11,8 +11,8 @@ def main():
 
     rocket.track("underwater:cam.x")
     rocket.track("underwater:cam.y")
-    rocket.track("cube:size")
-    rocket.track("cube:zoom")
+    t1 = rocket.track("cube:size")
+    t2 = rocket.track("cube:zoom")
 
     # Fake draw loop
     frames = 0
@@ -23,10 +23,12 @@ def main():
             print("Editor probably closed..")
             break
 
+        # Get track values from rocket
         v1 = rocket.value("underwater:cam.x")
         v2 = rocket.value("underwater:cam.y")
-        v3 = rocket.value("cube:size")
-        v4 = rocket.value("cube:zoom")
+        # Get track values from track
+        v3 = t1.value(rocket.row)
+        v4 = t2.value(rocket.row)
 
         time.sleep(1.0 / 1000 * 16)
         frames += 1

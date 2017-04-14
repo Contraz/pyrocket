@@ -32,7 +32,7 @@ class Rocket:
 
     def value(self, name):
         """get value of a track at the current time"""
-        return self.tracks.get(name).get_value(self.controller.row)
+        return self.tracks.get(name).value(self.controller.row)
 
     def int_value(self, name):
         return int(self.value(name))
