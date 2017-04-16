@@ -1,7 +1,7 @@
 import time
-from rocket.socketconnector import SocketConnError
+from rocket.connectors import SocketConnError
 from rocket.rocket import Rocket
-from rocket.controller import TimeController
+from rocket.controllers import TimeController
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
     t2 = rocket.track("cube:zoom")
 
     # Fake draw loop
-    frames = 0
+    frame = 0
     while True:
         try:
             rocket.update()
@@ -31,12 +31,11 @@ def main():
         v4 = t2.row_value(rocket.row)
 
         time.sleep(1.0 / 1000 * 16)
-        frames += 1
+        frame += 1
 
-        if frames % 60 == 0:
-            print("T", rocket.time, "R", rocket.row, "P", controller.playing)
-            print(v1, v2, v3, v4)
-            print(frames)
+        if frame % 60 == 0:
+            print("frame", frame, "time", rocket.time, "row", rocket.row, "playing", controller.playing)
+            print("values", v1, v2, v3, v4)
 
 
 if __name__ == '__main__':

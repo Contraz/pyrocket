@@ -1,4 +1,4 @@
-from .socketconnector import SocketConnector
+from .connectors import SocketConnector
 from .tracks import TrackContainer
 
 
