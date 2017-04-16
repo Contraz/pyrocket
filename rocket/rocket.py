@@ -1,30 +1,40 @@
 from .connectors import SocketConnector
 from .connectors import ProjectFileConnector
+from .connectors import FilesConnector
 from .tracks import TrackContainer
 
 
 class Rocket:
-    def __init__(self, controller):
+    def __init__(self, controller, track_path=None):
         """Create rocket instance without a connector"""
         self.controller = controller
         self.connector = None
-        self.tracks = TrackContainer()
+        self.tracks = TrackContainer(track_path)
         # hack in reference so we can look up tracks_per_second
         self.tracks.controller = self.controller
 
     @staticmethod
-    def from_project_file(controller, project_file):
+    def from_files(controller, track_path):
         """Create rocket instance using project file connector"""
-        rocket = Rocket(controller)
+        rocket = Rocket(controller, track_path=track_path)
+        rocket.connector = FilesConnector(track_path,
+                                          controller=controller,
+                                          tracks=rocket.tracks)
+        return rocket
+
+    @staticmethod
+    def from_project_file(controller, project_file, track_path=None):
+        """Create rocket instance using project file connector"""
+        rocket = Rocket(controller, track_path=track_path)
         rocket.connector = ProjectFileConnector(project_file,
                                                 controller=controller,
                                                 tracks=rocket.tracks)
         return rocket
 
     @staticmethod
-    def from_socket(controller, host=None, port=None):
+    def from_socket(controller, host=None, port=None, track_path=None):
         """Create rocket instance using socket connector"""
-        rocket = Rocket(controller)
+        rocket = Rocket(controller, track_path=track_path)
         rocket.connector = SocketConnector(controller=controller,
                                            tracks=rocket.tracks,
                                            host=host,

@@ -1,6 +1,7 @@
 import bisect
 import math
-# import os
+import os
+import struct
 
 STEP = 0
 LINEAR = 1
@@ -10,7 +11,7 @@ RAMP = 3
 
 class TrackContainer:
     """Keep track of tacks by their name and index"""
-    def __init__(self, track_path=None):
+    def __init__(self, track_path):
         self.tracks = {}
         self.track_index = []
         self.connector = None
@@ -39,8 +40,18 @@ class TrackContainer:
         self.track_index.append(obj)
 
     def save(self):
+        print("Saving tracks to: {}".format(self.track_path))
+        # Check if the path is valid
+        if self.track_path is None:
+            print("Track path is None")
+            return
+
+        if not os.path.exists(self.track_path):
+            print("FAILED: Path '{}' do not exist".format(self.track_path))
+            return
+
         for t in self.track_index:
-            print("Saving", t.name)
+            t.save(self.track_path)
 
 
 # TODO: Insert and delete operations in keys list is expensive
@@ -103,6 +114,32 @@ class Track:
 
         # Return the last index
         return len(self.keys) - 1
+
+    @staticmethod
+    def filename(name):
+        """Create a valid file name from track name"""
+        return "{}{}".format(name.replace(':', '#'), '.track')
+
+    @staticmethod
+    def trackname(name):
+        """Create track name from file name"""
+        return name.replace('#', ':').replace('.track', '')
+
+    def load(self, filepath):
+        """Load the track file"""
+        with open(filepath, 'rb') as fd:
+            num_keys = struct.unpack(">i", fd.read(4))[0]
+            for i in range(num_keys):
+                row, value, kind = struct.unpack('>ifb', fd.read(9))
+                self.keys.append(TrackKey(row, value, kind))
+
+    def save(self, path):
+        """Save the track"""
+        name = Track.filename(self.name)
+        with open(os.path.join(path, name), 'wb') as fd:
+            fd.write(struct.pack('>I', len(self.keys)))
+            for k in self.keys:
+                fd.write(struct.pack('>ifb', k.row, k.value, k.kind))
 
     def print_keys(self):
         for k in self.keys:
