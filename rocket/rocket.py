@@ -1,14 +1,41 @@
 from .connectors import SocketConnector
+from .connectors import ProjectFileConnector
 from .tracks import TrackContainer
 
 
 class Rocket:
-    def __init__(self, controller, track_path=None):
+    def __init__(self, controller):
+        """Create rocket instance without a connector"""
         self.controller = controller
         self.connector = None
-        self.tracks = TrackContainer(track_path)
+        self.tracks = TrackContainer()
         # hack in reference so we can look up tracks_per_second
         self.tracks.controller = self.controller
+
+    @staticmethod
+    def from_project_file(controller, project_file):
+        """Create rocket instance using project file connector"""
+        rocket = Rocket(controller)
+        rocket.connector = ProjectFileConnector(project_file,
+                                                controller=controller,
+                                                tracks=rocket.tracks)
+        # hack in references to avoid using callbacks for now
+        rocket.tracks.connector = rocket.connector
+        rocket.controller.connector = rocket.connector
+        return rocket
+
+    @staticmethod
+    def from_socket(controller, host=None, port=None):
+        """Create rocket instance using socket connector"""
+        rocket = Rocket(controller)
+        rocket.connector = SocketConnector(controller=controller,
+                                           tracks=rocket.tracks,
+                                           host=host,
+                                           port=port)
+        # hack in references to avoid using callbacks for now
+        rocket.tracks.connector = rocket.connector
+        rocket.controller.connector = rocket.connector
+        return rocket
 
     @property
     def time(self):
@@ -19,11 +46,7 @@ class Rocket:
         return self.controller.row
 
     def start(self):
-        self.connector = SocketConnector(controller=self.controller,
-                                         tracks=self.tracks)
-        # hack in references to avoid using callbacks for now
-        self.tracks.connector = self.connector
-        self.controller.connector = self.connector
+        self.controller.playing = True
 
     # Not all editors support this (breaks compatibility)
     # def pause(self):

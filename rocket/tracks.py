@@ -10,7 +10,7 @@ RAMP = 3
 
 class TrackContainer:
     """Keep track of tacks by their name and index"""
-    def __init__(self, track_path):
+    def __init__(self, track_path=None):
         self.tracks = {}
         self.track_index = []
         self.connector = None

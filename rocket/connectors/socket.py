@@ -1,5 +1,6 @@
 import socket
 import struct
+from .base import Connector
 
 
 CLIENT_GREET = "hello, synctracker!"
@@ -20,14 +21,14 @@ class SocketConnError(Exception):
     pass
 
 
-class SocketConnector:
+class SocketConnector(Connector):
     """Connection to the rocket editor/server"""
-    def __init__(self, host="127.0.0.1", port=SYNC_DEFAULT_PORT, controller=None, tracks=None):
+    def __init__(self, host=None, port=None, controller=None, tracks=None):
         self.controller = controller
         self.tracks = tracks
 
-        self.host = host
-        self.port = port
+        self.host = host or "127.0.0.1"
+        self.port = port or SYNC_DEFAULT_PORT
 
         self.socket = None
         self.reader = None

@@ -6,7 +6,8 @@ from rocket.controllers import TimeController
 
 def main():
     controller = TimeController(24)
-    rocket = Rocket(controller, track_path="./data")
+    rocket = Rocket.from_socket(controller)
+    # rocket = Rocket.from_project_file(controller, 'test.xml')
     rocket.start()
 
     rocket.track("underwater:cam.x")
