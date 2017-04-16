@@ -19,9 +19,6 @@ class Rocket:
         rocket.connector = ProjectFileConnector(project_file,
                                                 controller=controller,
                                                 tracks=rocket.tracks)
-        # hack in references to avoid using callbacks for now
-        rocket.tracks.connector = rocket.connector
-        rocket.controller.connector = rocket.connector
         return rocket
 
     @staticmethod
@@ -32,9 +29,6 @@ class Rocket:
                                            tracks=rocket.tracks,
                                            host=host,
                                            port=port)
-        # hack in references to avoid using callbacks for now
-        rocket.tracks.connector = rocket.connector
-        rocket.controller.connector = rocket.connector
         return rocket
 
     @property

@@ -26,6 +26,8 @@ class SocketConnector(Connector):
     def __init__(self, host=None, port=None, controller=None, tracks=None):
         self.controller = controller
         self.tracks = tracks
+        self.controller.connector = self
+        self.tracks.connector = self
 
         self.host = host or "127.0.0.1"
         self.port = port or SYNC_DEFAULT_PORT
