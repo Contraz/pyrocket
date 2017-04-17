@@ -115,6 +115,34 @@ Quick draw loop setup:
         # Emulate 60 fps
         time.sleep(1.0 / 1000 * 16)
 
+Track Names
+===========
+
+The standard rocket editor support track names using utf-8, but this is not a 100%
+guarantee that other track editors also support this.
+
+Some editors such as `Rocket OpenGL editor <https://github.com/emoon/rocket>`_
+support track grouping. Grouping is done by adding a prefix in the track name
+followed by a colon.
+
+Example:
+::
+
+    cube:rot.x
+    cube:rot.y
+    cube:rot.z
+
+    monkey:rot.x
+    monkey:rot.y
+    monkey:rot.z
+
+The uniqueness of the track is based on the entire name, so you can re-use
+the same name across different groups.
+
+Track names (after colon) should ideally be as short as possible. 12 characters is
+a good limit as editors either cut off the name or expand the column width with
+larger names. It's common to use dot as a separator in track names as well, but
+this is not enforced as far as we know.
 
 .. |pypi| image:: https://img.shields.io/pypi/v/pyrocket.svg
    :target: https://pypi.python.org/pypi/pyrocket
