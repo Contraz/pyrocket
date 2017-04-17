@@ -25,7 +25,7 @@ set of interpolating key frames. There are no requirements for music to be invol
 How Rocket Works
 ================
 
-Rocket data is a collection of named groups ("tracks") containing key frames. Each key 
+Rocket data is a collection of named groups ("tracks") containing key frames. Each key
 frame contains a row number (int), value (float) and interpolation type (enum/byte).
 The row number is a time unit. This is translated to seconds based on a configured rows
 per second value. Rows per second is normally adjusted based on the music such as beats
@@ -48,7 +48,16 @@ The rocket client can be used in three different modes:
   reduce the size of all the key frame data.
 
 
-.. |pypi| image:: https://img.shields.io/pypi/v/pyrocket.svg
-   :target: https://pypi.python.org/pypi/pyrocket
-.. |travis| image:: https://travis-ci.org/Contraz/pyrocket.svg?branch=master
-   :target: https://travis-ci.org/Contraz/pyrocket
+Interpolation Types
+===================
+
+The client library will do all the interpolation calculations for you.
+The rocket protocol is supposed to be as simple as possible. If you need any other
+interpolation types you can for example use linear interpolation and apply
+a formula on these values.
+
+Supported interpolation modes are:
+ - Step: Key frame produces a constant value)
+ - Linear: Linear interpolation between key frames
+ - Smooth: Interpolates key frames using: ``t * t * (3 - 2 * t)``
+ - Ramp: Interpolates key frame using: ``t ^ 2``
