@@ -149,7 +149,7 @@ this is not enforced as far as we know.
 When tracks are serialized into binary format the colon is replaced with #.
 ``cube:rot.x`` track is save in the file ``cube#rot.x.track``.
 
-.. |editor| image:: https://github.com/Contraz/pyrocket/blob/master/editor.png
+.. |editor| image:: https://raw.githubusercontent.com/Contraz/pyrocket/master/editor.png
 .. |pypi| image:: https://img.shields.io/pypi/v/pyrocket.svg
    :target: https://pypi.python.org/pypi/pyrocket
 .. |travis| image:: https://travis-ci.org/Contraz/pyrocket.svg?branch=master
