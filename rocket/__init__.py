@@ -1,1 +1,1 @@
-from .rocket import Rocket
+from .rocket import Rocket  # noqa
