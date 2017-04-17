@@ -1,12 +1,23 @@
+import logging
 from .connectors import SocketConnector
 from .connectors import ProjectFileConnector
 from .connectors import FilesConnector
 from .tracks import TrackContainer
 
+logger = logging.getLogger("rocket")
+
 
 class Rocket:
-    def __init__(self, controller, track_path=None):
+    def __init__(self, controller, track_path=None, log_level=logging.ERROR):
         """Create rocket instance without a connector"""
+        # set up logging
+        sh = logging.StreamHandler()
+        sh.setLevel(log_level)
+        formatter = logging.Formatter('%(name)s-%(levelname)s: %(message)s')
+        sh.setFormatter(formatter)
+        logger.addHandler(sh)
+        logger.setLevel(log_level)
+
         self.controller = controller
         self.connector = None
         self.tracks = TrackContainer(track_path)
@@ -14,27 +25,27 @@ class Rocket:
         self.tracks.controller = self.controller
 
     @staticmethod
-    def from_files(controller, track_path):
+    def from_files(controller, track_path, log_level=logging.ERROR):
         """Create rocket instance using project file connector"""
-        rocket = Rocket(controller, track_path=track_path)
+        rocket = Rocket(controller, track_path=track_path, log_level=log_level)
         rocket.connector = FilesConnector(track_path,
                                           controller=controller,
                                           tracks=rocket.tracks)
         return rocket
 
     @staticmethod
-    def from_project_file(controller, project_file, track_path=None):
+    def from_project_file(controller, project_file, track_path=None, log_level=logging.ERROR):
         """Create rocket instance using project file connector"""
-        rocket = Rocket(controller, track_path=track_path)
+        rocket = Rocket(controller, track_path=track_path, log_level=log_level)
         rocket.connector = ProjectFileConnector(project_file,
                                                 controller=controller,
                                                 tracks=rocket.tracks)
         return rocket
 
     @staticmethod
-    def from_socket(controller, host=None, port=None, track_path=None):
+    def from_socket(controller, host=None, port=None, track_path=None, log_level=logging.ERROR):
         """Create rocket instance using socket connector"""
-        rocket = Rocket(controller, track_path=track_path)
+        rocket = Rocket(controller, track_path=track_path, log_level=log_level)
         rocket.connector = SocketConnector(controller=controller,
                                            tracks=rocket.tracks,
                                            host=host,

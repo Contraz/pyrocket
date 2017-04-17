@@ -1,4 +1,5 @@
 import bisect
+import logging
 import math
 import os
 import struct
@@ -7,6 +8,8 @@ STEP = 0
 LINEAR = 1
 SMOOTH = 2
 RAMP = 3
+
+logger = logging.getLogger("rocket")
 
 
 class TrackContainer:
@@ -57,14 +60,14 @@ class TrackContainer:
             self.track_index.append(obj)
 
     def save(self):
-        print("Saving tracks to: {}".format(self.track_path))
+        logger.info("Saving tracks to: %s", self.track_path)
         # Check if the path is valid
         if self.track_path is None:
-            print("Track path is None")
+            logger.error("Track path is None")
             return
 
         if not os.path.exists(self.track_path):
-            print("FAILED: Path '{}' do not exist".format(self.track_path))
+            logger.error("FAILED: Path '%s' do not exist", self.track_path)
             return
 
         for t in self.track_index:
@@ -160,7 +163,7 @@ class Track:
 
     def print_keys(self):
         for k in self.keys:
-            print(k)
+            logger.info(k)
 
 
 class TrackKey:

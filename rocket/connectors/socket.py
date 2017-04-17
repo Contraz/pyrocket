@@ -1,7 +1,9 @@
+import logging
 import socket
 import struct
 from .base import Connector
 
+logger = logging.getLogger("rocket")
 
 CLIENT_GREET = "hello, synctracker!"
 SERVER_GREET = "hello, demo!"
@@ -24,6 +26,7 @@ class SocketConnError(Exception):
 class SocketConnector(Connector):
     """Connection to the rocket editor/server"""
     def __init__(self, host=None, port=None, controller=None, tracks=None):
+        logger.info("Initializing socket connector")
         self.controller = controller
         self.tracks = tracks
         self.controller.connector = self
@@ -40,18 +43,19 @@ class SocketConnector(Connector):
         self.greet_server()
 
     def init_socket(self):
+        logger.info("Attempting to connect to %s:%s", self.host, self.port)
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.host, self.port))
         self.socket.setblocking(True)
-        print("Connected to rocket server.")
+        logger.info("Connected to rocket server.")
         self.reader = BinaryReader(self.socket)
         self.writer = BinaryWriter(self.socket)
 
     def greet_server(self):
-        print("Greeting server with:", CLIENT_GREET)
+        logger.info("Greeting server with: %s", CLIENT_GREET)
         self.writer.string(CLIENT_GREET)
         data = self.reader.bytes(len(SERVER_GREET)).decode()
-        print("Server responded with:", data)
+        logger.info("Server responded with: %s", data)
         if data != SERVER_GREET:
             raise ValueError("Invalid server response: {}".format(data))
 
@@ -68,7 +72,7 @@ class SocketConnector(Connector):
     def controller_row_changed(self, row):
         self.writer.byte(SET_ROW)
         self.writer.int(int(row))
-        # print(" <- row: {}".format(row))
+        logger.info(" <- row: %s", row)
 
     # # Not all editors support this (breaks compatibility)
     # def controller_pause_state(self, state):
@@ -95,7 +99,7 @@ class SocketConnector(Connector):
         if func:
             func()
         else:
-            print("Unknown command:", c)
+            logger.error("Unknown command:", c)
         return True
 
     def handle_set_key(self):
@@ -104,7 +108,7 @@ class SocketConnector(Connector):
         row = self.reader.int()
         value = self.reader.float()
         kind = self.reader.byte()
-        print(" -> track={}, row={}, value={}, type={}".format(track_id, row, value, kind))
+        logger.info(" -> track=%s, row=%s, value=%s, type=%s", track_id, row, value, kind)
 
         # Add or update track value
         track = self.tracks.get_by_id(track_id)
@@ -114,7 +118,7 @@ class SocketConnector(Connector):
         """Read incoming delete key event from server"""
         track_id = self.reader.int()
         row = self.reader.int()
-        print(" -> track={}, row={}".format(track_id, row))
+        logger.info(" -> track=%s, row=%s", track_id, row)
 
         # Delete the actual track value
         track = self.tracks.get_by_id(track_id)
@@ -123,21 +127,21 @@ class SocketConnector(Connector):
     def handle_set_row(self):
         """Read incoming row change from server"""
         row = self.reader.int()
-        # print(" -> row:", row)
+        logger.info(" -> row: %s", row)
         self.controller.row = row
 
     def handle_pause(self):
         """Read pause signal from server"""
         flag = self.reader.byte()
         if flag > 0:
-            print(" -> pause: on")
+            logger.info(" -> pause: on")
             self.controller.playing = False
         else:
-            print(" -> pause: off")
+            logger.info(" -> pause: off")
             self.controller.playing = True
 
     def handle_save_tracks(self):
-        print("Remote export")
+        logger.info("Remote export")
         self.tracks.save()
 
 

@@ -2,9 +2,12 @@
 Connector reading track files in binary format.
 Each track is a separate file.
 """
+import logging
 import os
 from .base import Connector
 from rocket.tracks import Track
+
+logger = logging.getLogger("rocket")
 
 
 class FilesConnector(Connector):
@@ -16,6 +19,7 @@ class FilesConnector(Connector):
         :param controller: The controller
         :param tracks: Track container
         """
+        logger.info("Initialize loading binary track data")
         self.controller = controller
         self.tracks = tracks
         self.path = track_path
@@ -28,9 +32,11 @@ class FilesConnector(Connector):
         if not os.path.exists(self.path):
             raise ValueError("Track directory do not exist: {}".format(self.path))
 
+        logger.info("Looking for track files in '%s'", self.path)
         for f in os.listdir(self.path):
             if not f.endswith(".track"):
                 continue
             name = Track.trackname(f)
+            logger.info("Attempting to load ''", name)
             t = self.tracks.get_or_create(name)
             t.load(os.path.join(self.path, f))

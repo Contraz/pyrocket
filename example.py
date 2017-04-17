@@ -1,3 +1,4 @@
+import logging
 import time
 from rocket.connectors import SocketConnError
 from rocket import Rocket
@@ -6,8 +7,8 @@ from rocket.controllers import TimeController
 
 def main():
     controller = TimeController(24)
-    # rocket = Rocket.from_socket(controller, track_path="./data")
-    rocket = Rocket.from_project_file(controller, 'example.xml')
+    rocket = Rocket.from_socket(controller, track_path="./data", log_level=logging.ERROR)
+    # rocket = Rocket.from_project_file(controller, 'example.xml')
     # rocket = Rocket.from_files(controller, './data')
 
     rocket.track("underwater:cam.x")

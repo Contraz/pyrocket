@@ -149,6 +149,35 @@ this is not enforced as far as we know.
 When tracks are serialized into binary format the colon is replaced with #.
 ``cube:rot.x`` track is save in the file ``cube#rot.x.track``.
 
+Logging
+=======
+
+The default log level of the client is ``ERROR``.
+
+You can override the log level when initializing rocket:
+
+.. code:: python
+
+    import logging
+
+    rocket = Rocket.from_socket(controller, track_path="./data", log_level=logging.INFO)
+    rocket = Rocket.from_project_file(controller, 'example.xml', log_level=logging.INFO)
+    rocket = Rocket.from_files(controller, './data', log_level=logging.INFO)
+
+When adding custom controllers you can emit to the rocket logger:
+
+.. code:: python
+
+    import logging
+    from rocket.controllers import Controller
+
+    logger = logging.getLogger("rocket")
+
+    class MyController(Controller):
+        def __init__(self, rows_per_second):
+            logger.info("Hello, Rocket!")
+
+
 .. |editor| image:: https://raw.githubusercontent.com/Contraz/pyrocket/master/editor.png
 .. |pypi| image:: https://img.shields.io/pypi/v/pyrocket.svg
    :target: https://pypi.python.org/pypi/pyrocket
