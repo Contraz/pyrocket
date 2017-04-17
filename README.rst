@@ -60,4 +60,32 @@ Supported interpolation modes are:
  - Step: Key frame produces a constant value)
  - Linear: Linear interpolation between key frames
  - Smooth: Interpolates key frames using: ``t * t * (3 - 2 * t)``
- - Ramp: Interpolates key frame using: ``t ^ 2``
+ - Ramp: Interpolates key frame using: ``t^2``
+
+Using the Client
+================
+
+First of all you have to create a controller. This class keeps track of the current time. We currently only implement a basic ``TimeController``. If you want music playback you will have to implement your own controller by extending the base ``Controller`` class. The reason for this is simply that we don't want to lock users into using a specific library. The support for audio playback in Python is also a bit flaky and almost always requires some third party binary dependency. The easiest way to get music playback up and running is probably to use the ``mixer`` module in ``pygame``, but this requires SDL libraries to be installed.
+
+Quick draw loop setup:
+
+.. code:: python
+
+    from rocket.rocket import Rocket
+
+    # Simple controller tracking time at 24 rows per second
+    controller = TimeController(24)
+
+    # Create the rocket client in different modes
+    # Editor mode (track_path: where binary track data ends up when doing a remote export)
+    rocket = Rocket.from_socket(controller, track_path="./data")
+    # Playback using the editor file
+    rocket = Rocket.from_project_file(controller, 'example.xml')
+    # Playback using binary track data
+    rocket = Rocket.from_files(controller, './data')
+
+
+.. |pypi| image:: https://img.shields.io/pypi/v/pyrocket.svg
+   :target: https://pypi.python.org/pypi/pyrocket
+.. |travis| image:: https://travis-ci.org/Contraz/pyrocket.svg?branch=master
+   :target: https://travis-ci.org/Contraz/pyrocket
