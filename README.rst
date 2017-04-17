@@ -144,6 +144,10 @@ a good limit as editors either cut off the name or expand the column width with
 larger names. It's common to use dot as a separator in track names as well, but
 this is not enforced as far as we know.
 
+When tracks are serialized into binary format the colon is replaced with #.
+``cube:rot.x`` track is save in the file ``cube#rot.x.track``.
+
+
 .. |pypi| image:: https://img.shields.io/pypi/v/pyrocket.svg
    :target: https://pypi.python.org/pypi/pyrocket
 .. |travis| image:: https://travis-ci.org/Contraz/pyrocket.svg?branch=master
