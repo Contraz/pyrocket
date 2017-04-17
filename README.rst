@@ -65,12 +65,20 @@ Supported interpolation modes are:
 Using the Client
 ================
 
-First of all you have to create a controller. This class keeps track of the current time. We currently only implement a basic ``TimeController``. If you want music playback you will have to implement your own controller by extending the base ``Controller`` class. The reason for this is simply that we don't want to lock users into using a specific library. The support for audio playback in Python is also a bit flaky and almost always requires some third party binary dependency. The easiest way to get music playback up and running is probably to use the ``mixer`` module in ``pygame``, but this requires SDL libraries to be installed.
+First of all you have to create a controller. This class keeps track of the current
+time. We currently only implement a basic ``TimeController``. If you want music
+playback you will have to implement your own controller by extending the base
+``Controller`` class. The reason for this is simply that we don't want to lock
+users into using a specific library. The support for audio playback in Python is
+also a bit flaky and almost always requires some third party binary dependency.
+The easiest way to get music playback up and running is probably to use the
+``mixer`` module in ``pygame``, but this requires SDL libraries to be installed.
 
 Quick draw loop setup:
 
 .. code:: python
 
+    import time
     from rocket.rocket import Rocket
 
     # Simple controller tracking time at 24 rows per second
@@ -83,6 +91,29 @@ Quick draw loop setup:
     rocket = Rocket.from_project_file(controller, 'example.xml')
     # Playback using binary track data
     rocket = Rocket.from_files(controller, './data')
+
+    # Register some tracks
+    # Just register a track
+    rocket.track("cube:rotation")
+    # Register a track and store the reference for later
+    size_track = rocket.track("cube:size")
+
+    # Enter the draw loop
+    rocket.start()
+    while True:
+        # Update inner states. The controller is manly involved in that.
+        rocket.update()
+
+        # Get the cube rotation value at the current time
+        cube_rot = rocket.value("cube:rotation")
+
+        # Get the cube size by accessing the track directly (using seconds)
+        cube_size = size_track.time_value(rocket.time)
+        # Get the cube size by accessing the track directly (using track location)
+        cube_size = size_track.track_value(rocket.track)
+
+        # Emulate 60 fps
+        time.sleep(1.0 / 1000 * 16)
 
 
 .. |pypi| image:: https://img.shields.io/pypi/v/pyrocket.svg
