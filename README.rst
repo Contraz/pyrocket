@@ -84,6 +84,10 @@ The easiest way to get music playback up and running is probably to use the
 
 Quick draw loop setup:
 
+(Do note that both time and track row is interpolated as floats,
+so even low values for ``rows_per_second`` will yield smoothly interpolated
+key frame values)
+
 .. code:: python
 
     import time
