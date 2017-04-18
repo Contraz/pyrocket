@@ -93,7 +93,7 @@ key frame values)
 .. code:: python
 
     import time
-    from rocket.rocket import Rocket
+    from rocket import Rocket
 
     # Simple controller tracking time at 24 rows per second
     controller = TimeController(24)
