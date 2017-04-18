@@ -10,6 +10,8 @@ A `rocket <https://github.com/rocket/rocket>`__ client written in Python.
 
 |editor|
 
+pyrocket was originally part of demosys-py_ and was separated into this project.
+
 What is Rocket?
 ===============
 
@@ -193,3 +195,4 @@ When adding custom controllers you can emit to the rocket logger:
    :target: https://pypi.python.org/pypi/pyrocket
 .. |travis| image:: https://travis-ci.org/Contraz/pyrocket.svg?branch=master
    :target: https://travis-ci.org/Contraz/pyrocket
+.. _demosys-py: https://github.com/Contraz/demosys-py
