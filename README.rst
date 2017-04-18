@@ -116,10 +116,10 @@ key frame values)
     # Enter the draw loop
     rocket.start()
     while True:
-        # Update inner states. The controller is manly involved in that.
+        # Update inner states. The controller is mainly involved in that.
         rocket.update()
 
-        # Get the cube rotation value at the current time
+        # Get the cube rotation value at the current time (when update() was last called)
         cube_rot = rocket.value("cube:rotation")
 
         # Get the cube size by accessing the track directly (using seconds)
