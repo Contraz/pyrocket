@@ -94,6 +94,7 @@ key frame values)
 
     import time
     from rocket import Rocket
+    from rocket.controllers import TimeController
 
     # Simple controller tracking time at 24 rows per second
     controller = TimeController(24)
