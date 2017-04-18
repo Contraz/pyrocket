@@ -24,6 +24,12 @@ key frame data in the final product.
 Do note that the rocket system can also be used for other purposes were you need a static
 set of interpolating key frames. There are no requirements for music to be involved.
 
+Contributing
+============
+
+Be free to post questions and create issues. Do not hesitate to open a pull request
+(completed or work in progress). The worst thing that can happen is that we learn something.
+
 How Rocket Works
 ================
 
