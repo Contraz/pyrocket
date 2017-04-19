@@ -1,19 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
+	<group name="cube:" />
 <tracks rows="10000" startRow="0" endRow="10000" highlightRowStep="8">
-	<track name="underwater:cam.x" folded="0" color="ffb27474">
-		<key row="0" value="-100.000000" interpolation="1" />
-		<key row="1304" value="100.000000" interpolation="2" />
+	<track name="cube:rot.x" folded="0" color="ffb27474">
+		<key row="0" value="0.000000" interpolation="2" />
+		<key row="24" value="90.000000" interpolation="2" />
+		<key row="48" value="90.000000" interpolation="2" />
+		<key row="64" value="90.000000" interpolation="2" />
+		<key row="88" value="180.000000" interpolation="2" />
+		<key row="112" value="180.000000" interpolation="2" />
+		<key row="136" value="180.000000" interpolation="2" />
+		<key row="160" value="270.000000" interpolation="2" />
+		<key row="184" value="180.000000" interpolation="2" />
+		<key row="208" value="180.000000" interpolation="2" />
+		<key row="232" value="360.000000" interpolation="2" />
 	</track>
-	<track name="underwater:cam.y" folded="0" color="ffb28050">
-		<key row="0" value="100.000000" interpolation="1" />
-		<key row="1304" value="-100.000000" interpolation="1" />
+	<track name="cube:rot.y" folded="0" color="ffb28050">
+		<key row="0" value="0.000000" interpolation="2" />
+		<key row="24" value="0.000000" interpolation="2" />
+		<key row="48" value="90.000000" interpolation="2" />
+		<key row="64" value="90.000000" interpolation="2" />
+		<key row="88" value="90.000000" interpolation="2" />
+		<key row="112" value="180.000000" interpolation="2" />
+		<key row="136" value="180.000000" interpolation="2" />
+		<key row="160" value="180.000000" interpolation="2" />
+		<key row="184" value="270.000000" interpolation="2" />
+		<key row="208" value="180.000000" interpolation="2" />
+		<key row="232" value="180.000000" interpolation="2" />
 	</track>
-	<track name="cube:size" folded="0" color="ffa9b250">
-		<key row="0" value="-50.000000" interpolation="1" />
-		<key row="1304" value="50.000000" interpolation="1" />
+	<track name="cube:rot.z" folded="0" color="ffa9b250">
+		<key row="0" value="0.000000" interpolation="2" />
+		<key row="24" value="0.000000" interpolation="2" />
+		<key row="64" value="90.000000" interpolation="2" />
+		<key row="88" value="90.000000" interpolation="2" />
+		<key row="112" value="90.000000" interpolation="2" />
+		<key row="136" value="180.000000" interpolation="2" />
+		<key row="160" value="180.000000" interpolation="2" />
+		<key row="184" value="180.000000" interpolation="2" />
+		<key row="208" value="270.000000" interpolation="2" />
+		<key row="232" value="180.000000" interpolation="2" />
 	</track>
-	<track name="cube:zoom" folded="0" color="ff60b250">
-		<key row="0" value="-5.000000" interpolation="1" />
-		<key row="1304" value="-10.000000" interpolation="1" />
+	<track name="cube:pos.z" folded="0" color="ff60b250">
+		<key row="0" value="-8.000000" interpolation="0" />
 	</track>
 </tracks>

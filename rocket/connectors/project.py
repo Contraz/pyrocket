@@ -2,6 +2,7 @@
 Connector reading tracks from the track editor xml file.
 """
 import logging
+import re
 from xml.etree import ElementTree
 from .base import Connector
 
@@ -18,13 +19,17 @@ class ProjectFileConnector(Connector):
         self.tracks.connector = self
 
         logger.info("Attempting to load '%s'", project_file)
-        tree = ElementTree.parse(project_file)
-        root = tree.getroot()
+
+        with open(project_file, 'r') as fd:
+            xml = fd.read()
+        # Hack in a root node as ET expects only one root node
+        root = ElementTree.fromstring(re.sub(r"(<\?xml[^>]+\?>)", r"\1<root>", xml) + "</root>")
+        tracks = root.find('tracks')
 
         # TODO: Consider using root attributes
         # root.attrib {'rows': '10000', 'startRow': '0', 'endRow': '10000', 'highlightRowStep': '8'}
 
-        for track in root:
+        for track in tracks:
             t = self.tracks.get_or_create(track.attrib['name'])
             for key in track:
                 t.add_or_update(
