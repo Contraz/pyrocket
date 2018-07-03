@@ -32,6 +32,11 @@ Contributing
 Be free to post questions and create issues. Do not hesitate to open a pull request
 (completed or work in progress). The worst thing that can happen is that we learn something.
 
+Contributors:
+
+- `Einar Forselv <https://github.com/einarf>`_
+- `Arttu Tamminen <https://github.com/helgrima>`_
+
 How Rocket Works
 ================
 
