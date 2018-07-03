@@ -2,6 +2,7 @@ import logging
 import socket
 import struct
 from .base import Connector
+import platform
 
 logger = logging.getLogger("rocket")
 
@@ -16,7 +17,7 @@ GET_TRACK = 2
 SET_ROW = 3
 PAUSE = 4
 SAVE_TRACKS = 5
-
+IS_WINDOWS = True if platform.system() == "Windows" else False
 
 class SocketConnError(Exception):
     """Custom exception for detecting connection drop"""
@@ -46,7 +47,10 @@ class SocketConnector(Connector):
         logger.info("Attempting to connect to %s:%s", self.host, self.port)
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.host, self.port))
-        self.socket.setblocking(True)
+        if IS_WINDOWS:
+            self.socket.setblocking(False)
+        else:
+            self.socket.setblocking(True)
         logger.info("Connected to rocket server.")
         self.reader = BinaryReader(self.socket)
         self.writer = BinaryWriter(self.socket)
@@ -170,7 +174,10 @@ class BinaryReader:
             if blocking:
                 data = self.sock.recv(count)
             else:
-                data = self.sock.recv(count, socket.MSG_DONTWAIT)
+                if IS_WINDOWS:
+                    data = self.sock.recv(count)
+                else:
+                    data = self.sock.recv(count, socket.MSG_DONTWAIT)
         except BlockingIOError:
             return None
 
