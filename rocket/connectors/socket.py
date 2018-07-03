@@ -19,6 +19,7 @@ PAUSE = 4
 SAVE_TRACKS = 5
 IS_WINDOWS = True if platform.system() == "Windows" else False
 
+
 class SocketConnError(Exception):
     """Custom exception for detecting connection drop"""
     pass
