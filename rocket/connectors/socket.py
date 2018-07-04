@@ -59,7 +59,10 @@ class SocketConnector(Connector):
     def greet_server(self):
         logger.info("Greeting server with: %s", CLIENT_GREET)
         self.writer.string(CLIENT_GREET)
-        data = self.reader.bytes(len(SERVER_GREET)).decode()
+        greet = self.reader.bytes(len(SERVER_GREET))
+        while greet is None:
+            greet = self.reader.bytes(len(SERVER_GREET))
+        data = greet.decode()
         logger.info("Server responded with: %s", data)
         if data != SERVER_GREET:
             raise ValueError("Invalid server response: {}".format(data))
