@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="pyrocket",
-    version="0.2.6",
+    version="0.2.7",
     description="Rocket sync-tracker client",
     long_description=open('README.rst').read(),
     url="https://github.com/Contraz/pyrocket",
