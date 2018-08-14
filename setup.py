@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="pyrocket",
-    version="0.2.7",
+    version="0.2.8",
     description="Rocket sync-tracker client",
     long_description=open('README.rst').read(),
     url="https://github.com/Contraz/pyrocket",
@@ -19,6 +19,7 @@ setup(
         'Intended Audience :: Developers',
         'Topic :: Multimedia :: Graphics',
         'License :: OSI Approved :: zlib/libpng License',
+        'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
     ],

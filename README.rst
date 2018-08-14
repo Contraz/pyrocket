@@ -8,6 +8,9 @@ A `rocket <https://github.com/rocket/rocket>`__ client written in Python.
 - The port was inspired by `Moonlander <https://github.com/anttihirvonen/moonlander>`_
 - Tested with `Rocket OpenGL editor <https://github.com/emoon/rocket>`_
 
+This project is written in python 3 and is verified to work on
+Windows, OS X and Linux.
+
 |editor|
 
 pyrocket was originally part of demosys-py_ and was separated into this project.
