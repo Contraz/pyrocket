@@ -1,10 +1,8 @@
-import time
 import logging
 import socket
 import select
 import struct
 from .base import Connector
-import platform
 
 logger = logging.getLogger("rocket")
 
