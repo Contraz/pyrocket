@@ -47,11 +47,14 @@ class SocketConnector(Connector):
     def init_socket(self):
         logger.info("Attempting to connect to %s:%s", self.host, self.port)
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.settimeout(5.0)
         self.socket.connect((self.host, self.port))
+
         if IS_WINDOWS:
             self.socket.setblocking(False)
         else:
             self.socket.setblocking(True)
+
         logger.info("Connected to rocket server.")
         self.reader = BinaryReader(self.socket)
         self.writer = BinaryWriter(self.socket)
@@ -59,11 +62,14 @@ class SocketConnector(Connector):
     def greet_server(self):
         logger.info("Greeting server with: %s", CLIENT_GREET)
         self.writer.string(CLIENT_GREET)
-        greet = self.reader.bytes(len(SERVER_GREET))
+        greet = self.reader.bytes(len(SERVER_GREET), blocking=True)
+
         while greet is None:
             greet = self.reader.bytes(len(SERVER_GREET))
+
         data = greet.decode()
         logger.info("Server responded with: %s", data)
+
         if data != SERVER_GREET:
             raise ValueError("Invalid server response: {}".format(data))
 
@@ -93,9 +99,10 @@ class SocketConnector(Connector):
         :return: boolean. Did we actually read a command?
         """
         # Do a non-blocking read here so the demo can keep running if there is no data
-        c = self.reader.byte(blocking=False)
-        if c is None:
+        comm = self.reader.byte(blocking=False)
+        if comm is None:
             return False
+
         cmds = {
             SET_KEY: self.handle_set_key,
             DELETE_KEY: self.handle_delete_key,
@@ -103,11 +110,14 @@ class SocketConnector(Connector):
             PAUSE: self.handle_pause,
             SAVE_TRACKS: self.handle_save_tracks
         }
-        func = cmds.get(c)
+
+        func = cmds.get(comm)
+
         if func:
             func()
         else:
-            logger.error("Unknown command:", c)
+            logger.error("Unknown command: %s", comm)
+
         return True
 
     def handle_set_key(self):
@@ -174,20 +184,29 @@ class BinaryReader:
         return struct.unpack('>f', self._read(4, blocking=blocking))[0]
 
     def _read(self, count, blocking=True):
-        try:
-            if blocking:
-                data = self.sock.recv(count)
-            else:
-                if IS_WINDOWS:
+        data = None
+        while True:
+            try:
+                if blocking:
                     data = self.sock.recv(count)
                 else:
-                    data = self.sock.recv(count, socket.MSG_DONTWAIT)
-        except BlockingIOError:
-            return None
+                    if IS_WINDOWS:
+                        data = self.sock.recv(count)
+                    else:
+                        data = self.sock.recv(count, socket.MSG_DONTWAIT)
+            except BlockingIOError:
+                pass
+            
+            if not blocking:
+                return None
+
+            if blocking and data is not None:
+                break
 
         if len(data) == 0:
             raise SocketConnError("Connection probably closed")
-        return data
+
+        return bytes(data)
 
 
 class BinaryWriter:

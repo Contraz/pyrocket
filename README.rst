@@ -11,6 +11,7 @@ A `rocket <https://github.com/rocket/rocket>`__ client written in Python.
 |editor|
 
 pyrocket was originally part of demosys-py_ and was separated into this project.
+The screenshot shows pyrocket with demosys-py and Rocket OpenGL editor.
 
 What is Rocket?
 ===============
