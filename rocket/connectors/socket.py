@@ -1,5 +1,7 @@
+import time
 import logging
 import socket
+import select
 import struct
 from .base import Connector
 import platform
@@ -17,7 +19,6 @@ GET_TRACK = 2
 SET_ROW = 3
 PAUSE = 4
 SAVE_TRACKS = 5
-IS_WINDOWS = True if platform.system() == "Windows" else False
 
 
 class SocketConnError(Exception):
@@ -47,13 +48,8 @@ class SocketConnector(Connector):
     def init_socket(self):
         logger.info("Attempting to connect to %s:%s", self.host, self.port)
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.settimeout(5.0)
+        self.socket.setblocking(True)
         self.socket.connect((self.host, self.port))
-
-        if IS_WINDOWS:
-            self.socket.setblocking(False)
-        else:
-            self.socket.setblocking(True)
 
         logger.info("Connected to rocket server.")
         self.reader = BinaryReader(self.socket)
@@ -63,9 +59,6 @@ class SocketConnector(Connector):
         logger.info("Greeting server with: %s", CLIENT_GREET)
         self.writer.string(CLIENT_GREET)
         greet = self.reader.bytes(len(SERVER_GREET), blocking=True)
-
-        while greet is None:
-            greet = self.reader.bytes(len(SERVER_GREET))
 
         data = greet.decode()
         logger.info("Server responded with: %s", data)
@@ -184,29 +177,15 @@ class BinaryReader:
         return struct.unpack('>f', self._read(4, blocking=blocking))[0]
 
     def _read(self, count, blocking=True):
-        data = None
-        while True:
-            try:
-                if blocking:
-                    data = self.sock.recv(count)
-                else:
-                    if IS_WINDOWS:
-                        data = self.sock.recv(count)
-                    else:
-                        data = self.sock.recv(count, socket.MSG_DONTWAIT)
-            except BlockingIOError:
-                pass
-            
-            if not blocking:
+        if blocking:
+            return self.sock.recv(count)
+        else:
+            # The select will return a socket only if data is avaialble
+            rd_sock, wrt_sock, err_sock = select.select([self.sock], [], [], 0)
+            if not rd_sock:
                 return None
 
-            if blocking and data is not None:
-                break
-
-        if len(data) == 0:
-            raise SocketConnError("Connection probably closed")
-
-        return bytes(data)
+            return rd_sock[0].recv(count)
 
 
 class BinaryWriter:
