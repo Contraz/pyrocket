@@ -222,7 +222,7 @@ Format
 
 Interpolation enum:
 
-... code:: python
+.. code:: python
 
     STEP = 0
     LINEAR = 1
@@ -265,7 +265,7 @@ The track names above would be:
 
 The format of each track file is (all big endian):
 
-.. code:
+.. code::
 
     int: number of keyframes
     for number of keyframes
