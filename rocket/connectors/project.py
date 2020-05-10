@@ -24,12 +24,11 @@ class ProjectFileConnector(Connector):
             xml = fd.read()
         # Hack in a root node as ET expects only one root node
         root = ElementTree.fromstring(re.sub(r"(<\?xml[^>]+\?>)", r"\1<root>", xml) + "</root>")
-        tracks = root.find('tracks')
 
         # TODO: Consider using root attributes
         # root.attrib {'rows': '10000', 'startRow': '0', 'endRow': '10000', 'highlightRowStep': '8'}
 
-        for track in tracks:
+        for track in root.iter('track'):
             t = self.tracks.get_or_create(track.attrib['name'])
             for key in track:
                 t.add_or_update(
